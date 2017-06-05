@@ -16,7 +16,7 @@
 <script>
 
 // set the dimensions and margins of the graph
-var margin = {top: 35, right: 20, bottom: 30, left: 50},
+var margin = {top: 35, right: 70, bottom: 30, left: 50},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
@@ -77,7 +77,6 @@ d3.csv("years_genres_top5.csv", function(d, i, columns) {
       .attr("class", "line")
       .attr("d", valueline);
 
-  // Add the valueline2 path.
   svg.append("path")
       .data([data])
       .attr("class", "line")
@@ -101,6 +100,41 @@ d3.csv("years_genres_top5.csv", function(d, i, columns) {
       .attr("class", "line")
       .style("stroke", "purple")
       .attr("d", valueline5);
+
+  svg.append("text")
+  		.attr("transform", "translate(" + (width+1) + "," + y(data[data.length -1].emo) + ")")
+  		.attr("dy", ".35em")
+  		.attr("text-anchor", "start")
+  		.style("fill", "steelblue")
+  		.text("Emo");
+
+  svg.append("text")
+  		.attr("transform", "translate(" + (width+1) + "," + y(data[data.length -1].poppunk) + ")")
+  		.attr("dy", ".35em")
+  		.attr("text-anchor", "start")
+  		.style("fill", "red")
+  		.text("Pop punk");
+
+  svg.append("text")
+    	.attr("transform", "translate(" + (width+1) + "," + y(data[data.length -1].metalcore) + ")")
+    	.attr("dy", ".35em")
+    	.attr("text-anchor", "start")
+    	.style("fill", "yellow")
+    	.text("Metalcore");
+
+  svg.append("text")
+      .attr("transform", "translate(" + (width+1) + "," + y(data[data.length -2].screamo) + ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", "green")
+      .text("Screamo");
+
+  svg.append("text")
+      .attr("transform", "translate(" + (width+1) + "," + y(data[data.length -1].punk) + ")")
+      .attr("dy", ".35em")
+      .attr("text-anchor", "start")
+      .style("fill", "purple")
+      .text("Punk");
 
   // Add the X Axis
   svg.append("g")
