@@ -4,7 +4,7 @@
 
 .line {
   fill: none;
-  stroke: steelblue;
+  stroke: blue;
   stroke-width: 2px;
 }
 
@@ -105,7 +105,10 @@ d3.csv("WarpedTour_top5genresyears.csv", function(d, i, columns) {
   		.attr("transform", "translate(" + (width+1) + "," + y(data[data.length -1].emo) + ")")
   		.attr("dy", ".35em")
   		.attr("text-anchor", "start")
-  		.style("fill", "steelblue")
+  		.style("fill", "blue")
+      .style("font-family", "sans-serif")
+      .style("text-decoration", "bold")
+      .style("font-size", "12px")
   		.text("Emo");
 
   svg.append("text")
@@ -113,6 +116,9 @@ d3.csv("WarpedTour_top5genresyears.csv", function(d, i, columns) {
   		.attr("dy", ".35em")
   		.attr("text-anchor", "start")
   		.style("fill", "red")
+      .style("font-family", "sans-serif")
+      .style("text-decoration", "bold")
+      .style("font-size", "12px")
   		.text("Pop punk");
 
   svg.append("text")
@@ -120,13 +126,19 @@ d3.csv("WarpedTour_top5genresyears.csv", function(d, i, columns) {
     	.attr("dy", ".35em")
     	.attr("text-anchor", "start")
     	.style("fill", "yellow")
-    	.text("Metalcore");
+      .style("font-family", "sans-serif")
+      .style("text-decoration", "bold")
+      .style("font-size", "12px")
+      .text("Metalcore");
 
   svg.append("text")
       .attr("transform", "translate(" + (width+1) + "," + y(data[data.length -2].screamo) + ")")
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       .style("fill", "green")
+      .style("font-family", "sans-serif")
+      .style("text-decoration", "bold")
+      .style("font-size", "12px")
       .text("Screamo");
 
   svg.append("text")
@@ -134,6 +146,9 @@ d3.csv("WarpedTour_top5genresyears.csv", function(d, i, columns) {
       .attr("dy", ".35em")
       .attr("text-anchor", "start")
       .style("fill", "purple")
+      .style("font-family", "sans-serif")
+      .style("text-decoration", "bold")
+      .style("font-size", "12px")
       .text("Punk");
 
   // Add the X Axis
@@ -151,6 +166,7 @@ d3.csv("WarpedTour_top5genresyears.csv", function(d, i, columns) {
         .attr("fill", "#000")
         .attr("font-weight", "bold")
         .attr("text-anchor", "start")
+        .style("font-size", "12px")
         .text("Genre Percentage");
 
     svg.append("text")
