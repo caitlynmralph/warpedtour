@@ -3,7 +3,7 @@
 import os
 import numpy as np
 
-os.chdir('/Users/caitlynralph/Downloads/project_1/WarpedTour_spreadsheets')
+os.chdir('/Applications/MAMP/htdocs/project_1/WarpedTour_spreadsheets')
 
 csv = np.genfromtxt('WarpedTour_top19genres.csv', delimiter=",", dtype=object, skiprows=0)
 topgenres = csv[:]

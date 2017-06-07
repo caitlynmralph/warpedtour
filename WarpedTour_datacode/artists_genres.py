@@ -5,7 +5,7 @@ import spotipy
 import numpy as np
 import os
 
-os.chdir('/Users/caitlynralph/Downloads/project_1/WarpedTour_spreadsheets')
+os.chdir('/Applications/MAMP/htdocs/project_1/WarpedTour_spreadsheets')
 
 csv = np.genfromtxt('WarpedTour_artists.csv', delimiter="\n", dtype=object)
 artists = csv[:]

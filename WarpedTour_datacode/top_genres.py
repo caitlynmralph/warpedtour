@@ -3,7 +3,7 @@
 import os
 import numpy as np
 
-os.chdir('/Users/caitlynralph/Downloads/project_1/WarpedTour_spreadsheets')
+os.chdir('/Applications/MAMP/htdocs/project_1/WarpedTour_spreadsheets')
 
 csv = np.genfromtxt('WarpedTour_yearsgenres_totals.csv', delimiter=",", dtype=object, skiprows=0)
 years_genres_totals = csv[:]
@@ -30,7 +30,7 @@ new_totals = np.empty([1,1])
 # adjust threshold to change number of genres
 
 for i in range(0,408):
-    if int(totals[i]) > 270 and genres[i:i+1] != "no data" and genres[i:i+1] != "skate punk" and genres[i:i+1] != "pixie":
+    if int(totals[i]) > 295 and genres[i:i+1] != "no data":
         new_totals = np.append(new_totals, np.reshape(genres[i:i+1],[1,1]), axis = 0)
 
 new_totals = np.delete(new_totals, 0, axis=0)
@@ -42,4 +42,4 @@ for i in range(0,len(new_totals)):
 
 # change file name to reflect number of genres
 
-np.savetxt("WarpedTour_top5genres.csv", new_totals, delimiter=",", fmt="%s")
+np.savetxt("WarpedTour_top6genres.csv", new_totals, delimiter=",", fmt="%s")

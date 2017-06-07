@@ -3,7 +3,7 @@
 import numpy as np
 import os
 
-os.chdir('/Users/caitlynralph/Downloads/project_1/WarpedTour_spreadsheets')
+os.chdir('/Applications/MAMP/htdocs/project_1/WarpedTour_spreadsheets')
 
 csv = np.loadtxt('WarpedTour_artistsgenres_updated.tsv', delimiter="\t", dtype=object, skiprows=1)
 artists_genres = csv[:]

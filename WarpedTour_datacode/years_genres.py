@@ -3,7 +3,7 @@
 import numpy as np
 import os
 
-os.chdir('/Users/caitlynralph/Downloads/project_1/WarpedTour_spreadsheets')
+os.chdir('/Applications/MAMP/htdocs/project_1/WarpedTour_spreadsheets')
 
 csv = np.genfromtxt('WarpedTour_artistsgenresyears.tsv', delimiter="\t", dtype=object, skiprows=0)
 artists_genres_years = csv[:]
@@ -29,9 +29,9 @@ for i in range(0,len(genres_norepeats)):
     genres_norepeats[i] = genres_norepeats[i].replace('"','')
     print genres_norepeats[i]
 
-# np.savetxt("WarpedTour_genres.csv", genres_norepeats, delimiter="#", fmt="%s")
+np.savetxt("WarpedTour_genres.csv", genres_norepeats, delimiter="#", fmt="%s")
 
-years_genres = np.zeros([23,408])
+years_genres = np.zeros([23,406])
 
 for i in range(1, len(artists_genres_years)):
     y = artists_genres_years[i:i+1,2:3]

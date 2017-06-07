@@ -1,104 +1,142 @@
 <!DOCTYPE html>
-<link rel="stylesheet" href="genre.css">
-<script type="text/javascript" src="d3/d3.js"></script>
-<script src="d3/d3-tip.js"></script>
-<script>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Warped Tour Genres</title>
+    <link rel="stylesheet" href="genre.css">
+    <script type="text/javascript" src="d3/d3.js"></script>
+    <script src="d3/d3-tip.js"></script>
+    <script>
+    d3.csv("WarpedTour_yearstop6genres.csv", function(d, i, columns) {
+      for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
+      return d;
+    }, function(error, data) {
+      if (error) throw error;
 
-d3.csv("WarpedTour_yearstop5genres.csv", function(d, i, columns) {
-  for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
-  return d;
-}, function(error, data) {
-  if (error) throw error;
+      var margin = {top: 0, right: 30, bottom: 20, left: 20};
+      var width = 200 - margin.left - margin.right;
+      var height = 150 - margin.top - margin.bottom;
 
-  var width = 300;
-  var height = 200;
-  var margin = {top: 0, right: 0, bottom: 0, left: 0};
+      var keys = data.columns.slice(1);
+      var barWidth = width/(keys.length)-2;
 
-  var keys = data.columns.slice(1);
+      var x0 = d3.scaleBand()
+          .rangeRound([0, width])
+          .paddingInner([0])
+          .paddingOuter([0]);
 
-  var x0 = d3.scaleBand()
-      .rangeRound([0, width])
-      .paddingInner(0.1);
+      var x1 = d3.scaleBand()
+          .padding(0.05);
 
-  var x1 = d3.scaleBand()
-      .padding(0.05);
+      var y = d3.scaleLinear()
+          .rangeRound([height, 0]);
 
-  var y = d3.scaleLinear()
-      .rangeRound([height, 0]);
+      x1.domain(keys).rangeRound([0, x0.bandwidth()]);
+      y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
 
-  x0.domain(data.map(function(d) { return d.year; }));
-  x1.domain(keys).rangeRound([0, x0.bandwidth()]);
-  y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
+      var genreDiv = d3.select("body")
+        .append("div")
+        .attr("class","genre-div-container")
+        .selectAll("div")
+        .data(data)
+        .enter()
+        .append("div")
+        .attr("class","genre-div");
 
-  var tip = d3.tip()
-      .attr("class", "d3-tip")
-      .offset([-10, 0])
-      .html(function(d) {
-          return (d.key + ": " + (d3.format(".1r")(d.value*100)) + "%");
-      })
+      genreDiv.append("p")
+        .attr("class","genre-div-title")
+        .text(function(d){
+          return d.year;
+        });
 
-  var genreSvg = d3.select("body").selectAll("svg")
-    .data(data)
-    .enter()
-    .append("svg")
-    .attr("width",width)
-    .attr("height",height)
-    .style("width",width+"px")
-    .style("height",height+"px")
-    .append("g")
+      var genreSvg = genreDiv
+        .append("svg")
+        .attr("width",width+margin.left+margin.right)
+        .attr("height",height + margin.top + margin.bottom)
+        .style("width",width+margin.left+margin.right+"px")
+        .style("height",height+ margin.top + margin.bottom+"px")
+        .append("g")
+        .attr("transform","translate("+margin.left+","+margin.top+")");
 
-  genreSvg.call(tip)
+      genreSvg
+        .append("g")
+        .selectAll("rect")
+        .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("width", barWidth)
+        .attr("height", function(d) {
+          return ((height - y(d.value)));
+        })
+        .attr("x", function(d,i) {
+          return i*(barWidth + 2);
+        })
+        .attr("y", function(d) {
+          return y(d.value);
+        });
 
-  var barWidth = 10;
+      genreSvg.append("g")
+          .attr("class", "axis")
+          .attr("transform", "translate(0," + height + ")")
+          .selectAll("text")
+          .data(keys)
+          .enter()
+          .append("text")
+          .attr("class","axis-text")
+          .attr("x", function(d,i) {
+            return i*(width/(keys.length));
+          })
+          .attr("y", function(d,i) {
+            return 10;
+          })
+          .text(function(d,i){
+            if(i==0 || i == keys.length-1){
+              return d
+            }
+            return null
+          });
 
-  genreSvg
-    .selectAll("rect")
-    .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
-    .enter().append("rect")
-    .attr("class", "bar")
-    // .attr("width", x1.bandwidth())
-    .attr("width", barWidth)
-    .attr("height", function(d) { return height - y(d.value); })
-    .attr("x", function(d,i) {
-      return i*(barWidth + 1);
-      // return x1(d.key);
-    })
-    // .attr("x", function(d) {
-    //   return x1(d.key);
-    // })
-    .attr("y", function(d) { return y(d.value); })
-     .on('mouseover', tip.show)
-     .on('mouseout', tip.hide);
+        genreSvg.append("g")
+            .attr("class", "axis")
+            .selectAll("text")
+            .data(function(d) {
+              var data = keys.map(function(key) { return {key: key, value: d[key]}; });
+              console.log(data);
+              var max = d3.max(data,function(d){
+                return d.value;
+              })
+              data = data.map(function(d){
+                var isMax = 0;
+                if(d.value == max){
+                  isMax = 1;
+                }
+                return {key:d.key,value:d.value,d.isMax: isMax};
+              })
+              console.log(max);
+              return data;
+            })
+            .enter()
+            .append("text")
+            .attr("class","axis-text-label")
+            .attr("x", function(d,i) {
+              return i*(width/(keys.length));
+            })
+            .attr("y", function(d,i) {
+              return ((y(d.value))) - 5;
+            })
+            .text(function(d,i){
+              console.log(d3.max(d, function(key) {return d[key];}));
+              if(i==0 || i == keys.length-1){
+                return Math.round(d.value*100)+"%"
+              }
+              return null
+            });
+    });
 
-  genreSvg.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x0))
-
-  genreSvg.append("text")
-      .attr("class", "x-axis")
-      .attr("x", (width/2) )
-      .attr("y",  height + margin.bottom )
-      .style("text-anchor", "middle")
-      .text("Genre");
-
-  genreSvg.append("g")
-      .attr("class", "axis")
-      .call(d3.axisLeft(y).ticks(5, "%"))
-    .append("text")
-      .attr("class","y-axis")
-      .attr("x", 2)
-      .attr("y", y(y.ticks().pop()) + 0.5)
-      .attr("dy", "0.32em")
-      .attr("text-anchor", "start")
-      .text("Genre by year");
-
-  genreSvg.append("text")
-    .attr("class","chart-title")
-    .attr("x", 5)
-    .attr("y", -15)
-    .attr("text-anchor", "left")
-    .text("How have Warped Tour's genres changed over time?");
-});
-
-</script>
+    </script>
+  </head>
+  <body>
+    <p class="chart-title">How have Warped Tour&rsquo;s genres changed over time?</p>
+    <p class="chart-subtitle">Percent of genre in lineup each year</p>
+  </body>
+</html>
