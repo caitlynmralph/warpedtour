@@ -13,7 +13,7 @@
     }, function(error, data) {
       if (error) throw error;
 
-      var margin = {top: 0, right: 30, bottom: 20, left: 20};
+      var margin = {top: 5, right: 30, bottom: 20, left: 20};
       var width = 200 - margin.left - margin.right;
       var height = 150 - margin.top - margin.bottom;
 
@@ -101,18 +101,15 @@
             .selectAll("text")
             .data(function(d) {
               var data = keys.map(function(key) { return {key: key, value: d[key]}; });
-              console.log(data);
               var max = d3.max(data,function(d){
                 return d.value;
-              })
-              data = data.map(function(d){
+              });
+              data = data.map(function(d, key){
                 var isMax = 0;
                 if(d.value == max){
                   isMax = 1;
                 }
-                return {key:d.key,value:d.value,d.isMax: isMax};
-              })
-              console.log(max);
+                return {key:key,value:d.value,isMax:isMax}; });
               return data;
             })
             .enter()
@@ -124,9 +121,8 @@
             .attr("y", function(d,i) {
               return ((y(d.value))) - 5;
             })
-            .text(function(d,i){
-              console.log(d3.max(d, function(key) {return d[key];}));
-              if(i==0 || i == keys.length-1){
+            .text(function(d,i,key){
+              if(i==0 || i == keys.length-1 || d.isMax == 1){
                 return Math.round(d.value*100)+"%"
               }
               return null

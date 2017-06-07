@@ -142,7 +142,7 @@
 .axis-text-label {
   font-size: 10px;
   font-family: 'Atlas Grotesk Web';
-  text-anchor: left;
+  text-anchor: center;
   font-weight: 900;
   fill: #000000;
   text-shadow: 1px 1px white, -1px -1px white, 0 1px white, 1px 0 white;
