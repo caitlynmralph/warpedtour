@@ -7,7 +7,7 @@
     <script type="text/javascript" src="d3/d3.js"></script>
     <script src="d3/d3-tip.js"></script>
     <script>
-    d3.csv("WarpedTour_yearstop20genres.csv", function(d, i, columns) {
+    d3.csv("data.csv", function(d, i, columns) {
       for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
       return d;
     }, function(error, data) {
