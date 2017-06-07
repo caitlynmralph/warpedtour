@@ -5,7 +5,7 @@ import numpy as np
 
 os.chdir('/Applications/MAMP/htdocs/project_1/WarpedTour_spreadsheets')
 
-csv = np.genfromtxt('WarpedTour_top6genres.csv', delimiter=",", dtype=object, skiprows=0)
+csv = np.genfromtxt('WarpedTour_top20genres.csv', delimiter=",", dtype=object, skiprows=0)
 topgenres = csv[:]
 
 csv = np.genfromtxt('WarpedTour_yearsgenres_totals.csv', delimiter=",", dtype=object, skiprows=0)
@@ -20,7 +20,7 @@ for i in range(0,len(topgenres)):
      years_genres_top = np.append(years_genres_top, np.reshape([topgenres[i]],[1,1]), axis = 1)
 
 years_genres_top = np.delete(years_genres_top,0)
-years_genres_top = np.reshape(years_genres_top,[6,1])
+years_genres_top = np.reshape(years_genres_top,[20,1])
 
 for i in range(1,24):
     year_topgenres = np.zeros([1, 1])
@@ -31,7 +31,7 @@ for i in range(1,24):
             n = float(a)/float(b)
             year_topgenres = np.append(year_topgenres, n)
     year_topgenres = np.delete(year_topgenres,0)
-    year_topgenres = np.reshape(year_topgenres, [6,1])
+    year_topgenres = np.reshape(year_topgenres, [20,1])
     years_genres_top = np.append(years_genres_top,year_topgenres, axis=1)
 
 years = np.empty([1,1])
@@ -48,4 +48,4 @@ years_genres_top = np.append(years, years_genres_top,axis=0)
 
 print years_genres_top
 
-np.savetxt("WarpedTour_yearstop6genres.csv", years_genres_top, delimiter=",", fmt="%s")
+np.savetxt("WarpedTour_yearstop20genres.csv", years_genres_top, delimiter=",", fmt="%s")
