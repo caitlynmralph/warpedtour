@@ -13,7 +13,7 @@
     }, function(error, data) {
       if (error) throw error;
 
-      var margin = {top: 5, right: 30, bottom: 20, left: 20};
+      var margin = {top: 5, right: 10, bottom: 20, left: 10};
       var width = 200 - margin.left - margin.right;
       var height = 150 - margin.top - margin.bottom;
 
@@ -34,21 +34,7 @@
       x1.domain(keys).rangeRound([0, x0.bandwidth()]);
       y.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
 
-            // gridlines in x axis function
-      function make_x_gridlines() {
-          return d3.axisBottom(x)
-              .ticks(5)
-      }
-
-      // gridlines in y axis function
-      function make_y_gridlines() {
-          return d3.axisLeft(y)
-              .ticks(5)
-      }
-
-      var genreDiv = d3.select("body")
-        .append("div")
-        .attr("class","genre-div-container")
+      var genreDiv = d3.select(".genre-div-container")
         .selectAll("div")
         .data(data)
         .enter()
@@ -61,6 +47,18 @@
           return d.year;
         });
 
+      var bands = ["Blink-182", "The Offspring", "The Interrupters",
+      "Streetlight Manifesto", "Brand New", "From First To Last",
+      "Mayday Parade", "A Day To Remember", "Chelsea Grin",
+      "Underoath", "Linkin Park", "Limp Bizkit"]
+
+      for (j = 0; j < bands.length; j++) {
+        genreDiv.append("p")
+          .filter(function(d,i){
+            return i == j })
+          .attr("class","caption")
+          .text("Bands like: " + bands[j])};
+
       var genreSvg = genreDiv
         .append("svg")
         .attr("width",width+margin.left+margin.right)
@@ -69,6 +67,31 @@
         .style("height",height+ margin.top + margin.bottom+"px")
         .append("g")
         .attr("transform","translate("+margin.left+","+margin.top+")");
+
+      var gridLineContainer = genreSvg
+        .filter(function(d,i){
+          return i == 0 || i == genreSvg.size()-1 || i % 4 == 0
+        })
+        .append("g")
+        .attr("class","grid-line-g")
+        .attr("transform","translate("+0+","+y(.10)+")")
+
+      gridLineContainer
+        .append("text")
+        .attr("x",-14)
+        .attr("y",4)
+        .text("10%")
+        .attr("class","grid-line-text")
+        ;
+
+      gridLineContainer
+        .append("line")
+        .attr("x1",0)
+        .attr("x2",width)
+        .attr("y1",0)
+        .attr("y2",0)
+        .attr("class","grid-line")
+        ;
 
       genreSvg
         .append("g")
@@ -146,6 +169,9 @@
   <body>
     <p class="chart-title">How have Warped Tour&rsquo;s genres evolved over time?</p>
     <p class="chart-subtitle">Percent of genre in lineup per year</p>
+    <div class="genre-div-container">
+
+    </div>
     <p class="source">Source: Spotify, Wikipedia</p>
   </body>
 </html>
